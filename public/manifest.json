@@ -1,0 +1,17 @@
+{
+  "name": "Live Tracker",
+  "short_name": "Tracker",
+  "description": "Real-time team location tracker",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1e3a5f",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/vite.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
