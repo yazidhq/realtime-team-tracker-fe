@@ -13,15 +13,33 @@ const MasterPanel = ({ activePanel, togglePanel }) => {
 
   return (
     <>
-      {panelButtons.map((btn, i) => (
-        <PanelButton
-          key={btn.id}
-          onClose={() => togglePanel(btn.id)}
-          value={btn.icon}
-          top={10 + i * 50}
-          disabled={!isAuthenticated && btn.id !== "profile"}
-        />
-      ))}
+      {panelButtons.map((btn, i) => {
+        let panelTop = 10;
+        let btnSize = 40;
+        let gap = 12;
+        try {
+          const style = getComputedStyle(document.documentElement);
+          panelTop = parseInt(style.getPropertyValue("--panel-top")) || panelTop;
+          btnSize = parseInt(style.getPropertyValue("--button-size")) || btnSize;
+          gap = parseInt(style.getPropertyValue("--button-gap")) || gap;
+        } catch {
+          // ignore
+        }
+
+        const top = panelTop + i * (btnSize + gap);
+
+        return (
+          <PanelButton
+            key={btn.id}
+            onClose={() => togglePanel(btn.id)}
+            value={btn.icon}
+            top={top}
+            disabled={!isAuthenticated && btn.id !== "profile"}
+            active={Boolean(activePanel === btn.id)}
+            index={i}
+          />
+        );
+      })}
 
       <PanelTemplate isOpen={Boolean(activePanel)}>
         {activePanel === "profile" && (

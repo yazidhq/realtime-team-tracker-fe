@@ -1,0 +1,147 @@
+/* Global app styles and responsive rules for panel and buttons */
+:root {
+  --panel-width: 320px;
+  --panel-gap-right: 45px;
+  --panel-padding: 10px;
+  --panel-top: 0px;
+  --button-size: 45px;
+  --button-size-mobile: 45px;
+  --button-gap: 12px;
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Panel template base */
+.panel-template {
+  position: absolute;
+  top: var(--panel-top);
+  right: 16px;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  width: 0;
+  height: calc(100vh - 20px);
+  margin-top: 10px;
+  margin-right: 16px;
+}
+
+.panel-template.open {
+  width: var(--panel-width);
+  margin-right: var(--panel-gap-right);
+}
+
+.panel-template.closed {
+  width: 0 !important;
+  margin-right: 16px;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  pointer-events: none;
+}
+
+.panel-body {
+  height: 100%;
+  max-height: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: auto;
+  overscroll-behavior: contain;
+  padding: var(--panel-padding);
+}
+
+/* panel content padding handled by children (p-3) */
+
+/* Floating panel buttons */
+.panel-button {
+  position: absolute;
+  right: 10px;
+  z-index: 1001;
+  width: var(--button-size);
+  height: var(--button-size);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  color: #1e3a5f; /* dark icon color for contrast */
+  font-size: 20px;
+  opacity: 1;
+  pointer-events: auto;
+  border-radius: 10px;
+  box-sizing: border-box;
+  border: 1px solid transparent; /* keep size stable when active */
+  transition: transform 140ms ease, border-color 140ms ease,
+    box-shadow 140ms ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.panel-button[disabled] {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.panel-button.active {
+  border: 1px solid #000;
+}
+
+/* Mobile adjustments */
+@media (max-width: 600px) {
+  .panel-template {
+    top: auto;
+    bottom: calc(10px + var(--safe-area-bottom));
+    left: 10px;
+    right: 10px;
+    width: calc(100% - 20px);
+    height: calc(45vh - var(--safe-area-bottom));
+    margin: 0;
+    border-radius: 10px;
+  }
+
+  .panel-template.closed {
+    transform: translateY(
+      calc(110% + var(--safe-area-bottom))
+    ); /* hide off-screen when closed */
+    height: 0;
+    opacity: 0;
+    pointer-events: none;
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .panel-template.open {
+    width: calc(100% - 20px);
+  }
+
+  .panel-button {
+    width: var(--button-size-mobile);
+    height: var(--button-size-mobile);
+    font-size: 22px;
+    right: 12px;
+    border-radius: 10px;
+  }
+
+  /* stack buttons from bottom using inline style 'data-index' or index class */
+  .panel-button[data-mobile-position] {
+    position: fixed; /* fixed so it stays above map on mobile */
+    right: 12px;
+    /* bottom will be set inline to account for stacking and safe-area */
+  }
+
+  /* reduce shadow on mobile for cleanliness */
+  .panel-button {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  }
+}
+
+/* Small tweak for map container full height handling */
+html,
+body,
+#root {
+  height: 100%;
+}
+
+.leaflet-container {
+  width: 100% !important;
+  height: 100% !important;
+}
