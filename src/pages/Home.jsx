@@ -1,20 +1,16 @@
 import LeafletMap from "../components/map/LeafletMap";
 import themes from "../assets/map-themes";
-import { useState } from "react";
 import MasterPanel from "../components/panel/MasterPanel";
+import { usePanelToggle } from "../hooks/usePanelToggle";
 
 const Home = () => {
-  const [activePanel, setActivePanel] = useState(null);
-
-  const togglePanel = (panelName) => {
-    setActivePanel((prev) => (prev === panelName ? null : panelName));
-  };
+  const { activePanel, togglePanel } = usePanelToggle(null, 100);
 
   return (
     <div className="position-relative" style={{ height: "100vh" }}>
       <LeafletMap theme={"streets"} tileUrl={themes.find((t) => t.id === "streets")?.url} />
 
-      <MasterPanel isOpen={activePanel !== "masterPanel"} onClose={() => togglePanel("masterPanel")} />
+      <MasterPanel activePanel={activePanel} togglePanel={togglePanel} />
     </div>
   );
 };
