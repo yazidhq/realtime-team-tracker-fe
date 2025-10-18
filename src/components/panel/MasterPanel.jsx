@@ -20,7 +20,6 @@ const MasterPanel = ({ activePanel, togglePanel }) => {
           value={btn.icon}
           top={10 + i * 50}
           disabled={!isAuthenticated && btn.id !== "profile"}
-          active={activePanel === btn.id}
         />
       ))}
 

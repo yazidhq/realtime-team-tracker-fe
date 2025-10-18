@@ -6,8 +6,7 @@ import { useAuth } from "../context/auth/auth-context";
 
 const Home = () => {
   const { isAuthenticated } = useAuth();
-  const initialPanel = isAuthenticated ? "group" : "profile";
-  const { activePanel, togglePanel } = usePanelToggle(initialPanel, 300);
+  const { activePanel, togglePanel } = usePanelToggle(isAuthenticated, 300);
 
   return (
     <div className="position-relative" style={{ height: "100vh" }}>
