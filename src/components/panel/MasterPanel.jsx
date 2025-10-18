@@ -14,7 +14,14 @@ const MasterPanel = ({ activePanel, togglePanel }) => {
   return (
     <>
       {panelButtons.map((btn, i) => (
-        <PanelButton key={btn.id} onClose={() => togglePanel(btn.id)} value={btn.icon} top={10 + i * 50} />
+        <PanelButton
+          key={btn.id}
+          onClose={() => togglePanel(btn.id)}
+          value={btn.icon}
+          top={10 + i * 50}
+          disabled={!isAuthenticated && btn.id !== "profile"}
+          active={activePanel === btn.id}
+        />
       ))}
 
       <PanelTemplate isOpen={Boolean(activePanel)}>

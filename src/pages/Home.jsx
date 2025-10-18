@@ -2,9 +2,12 @@ import LeafletMap from "../components/map/LeafletMap";
 import themes from "../assets/map-themes";
 import MasterPanel from "../components/panel/MasterPanel";
 import { usePanelToggle } from "../hooks/usePanelToggle";
+import { useAuth } from "../context/auth/auth-context";
 
 const Home = () => {
-  const { activePanel, togglePanel } = usePanelToggle(null, 100);
+  const { isAuthenticated } = useAuth();
+  const initialPanel = isAuthenticated ? "group" : "profile";
+  const { activePanel, togglePanel } = usePanelToggle(initialPanel, 300);
 
   return (
     <div className="position-relative" style={{ height: "100vh" }}>

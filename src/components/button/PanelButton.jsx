@@ -1,10 +1,11 @@
-const PanelButton = ({ value, onClose, top }) => {
+const PanelButton = ({ value, onClose, top, disabled = false, active = false }) => {
   const topValue = typeof top === "number" ? `${top}px` : top || "10px";
 
   return (
     <button
       className="btn position-absolute rounded shadow"
-      onClick={onClose}
+      onClick={disabled ? undefined : onClose}
+      disabled={disabled}
       style={{
         top: topValue,
         right: "10px",
@@ -16,8 +17,12 @@ const PanelButton = ({ value, onClose, top }) => {
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "#fff",
-        color: "#1e3a5f",
+        color: "white",
         fontSize: "20px",
+        opacity: disabled ? 0.5 : 1,
+        pointerEvents: disabled ? "none" : "auto",
+        border: active ? "1px solid #000" : "none",
+        boxSizing: "border-box",
       }}
     >
       {value}
