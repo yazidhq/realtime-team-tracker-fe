@@ -60,24 +60,37 @@ const AuthForm = () => {
       <div className="d-grid gap-2 mb-4">
         <div className="btn-group" role="group" aria-label="Basic mixed styles example">
           <button type="button" onClick={() => setMode("login")} className={mode === "login" ? "btn btn-dark" : "btn btn-outline-dark"}>
-            Login
+            Sign In
           </button>
           <button type="button" onClick={() => setMode("register")} className={mode === "register" ? "btn btn-dark" : "btn btn-outline-dark"}>
-            Register
+            Sign Up
           </button>
         </div>
       </div>
 
       <form onSubmit={submit}>
+        {mode === "register" && (
+          <div className="row gx-2 mb-2">
+            <div className="col">
+              <label className="form-label">Full Name</label>
+              <input name="name" value={form.name || ""} onChange={onChange} className="form-control" required />
+            </div>
+            <div className="col">
+              <label className="form-label">Username</label>
+              <input name="username" value={form.username || ""} onChange={onChange} className="form-control" required />
+            </div>
+          </div>
+        )}
+
         <div className="mb-2">
-          <label className="form-label">Username</label>
-          <input name="username" value={form.username} onChange={onChange} className="form-control" required />
+          <label className="form-label">Email</label>
+          <input name="email" value={form.email} onChange={onChange} className="form-control" type="email" required />
         </div>
 
         {mode === "register" && (
           <div className="mb-2">
-            <label className="form-label">Email</label>
-            <input name="email" value={form.email} onChange={onChange} className="form-control" type="email" required />
+            <label className="form-label">Phone Number</label>
+            <input name="phone_number" value={form.phone_number} onChange={onChange} className="form-control" required />
           </div>
         )}
 
@@ -86,10 +99,17 @@ const AuthForm = () => {
           <input name="password" value={form.password} onChange={onChange} className="form-control" type="password" required />
         </div>
 
+        {mode === "register" && (
+          <div className="mb-2">
+            <label className="form-label">Confirm Password</label>
+            <input name="confirm_password" value={form.password} onChange={onChange} className="form-control" type="password" required />
+          </div>
+        )}
+
         {error && <div className="text-danger mb-2">{error}</div>}
         {success && <div className="text-success mb-2">{success}</div>}
 
-        <div className="d-grid gap-2">
+        <div className="d-grid gap-2 mt-4">
           <button className="btn btn-dark" type="submit" disabled={loading}>
             {loading ? "Please wait..." : mode === "login" ? "Login" : "Register"}
           </button>
