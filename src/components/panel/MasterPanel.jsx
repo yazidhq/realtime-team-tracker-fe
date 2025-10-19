@@ -3,25 +3,16 @@ import PanelButton from "../button/PanelButton";
 import PanelTemplate from "./PanelTemplate";
 import AuthForm from "../auth/AuthForm";
 import { CapitalizeFirstLetter } from "../../helpers/capitalized";
-import { useAsyncStatus } from "../../hooks/useAsyncStatus";
+import Logout from "../auth/Logout";
 
 const MasterPanel = ({ activePanel, togglePanel }) => {
-  const { user, isAuthenticated, handleLogout } = useAuth();
-  const { loading, error, success, runAsync } = useAsyncStatus();
+  const { user, isAuthenticated } = useAuth();
 
   const panelButtons = [
     { id: "profile", icon: "👤" },
     { id: "group", icon: "👥" },
     { id: "setting", icon: "⚙️" },
   ];
-
-  const submitLogout = async (e) => {
-    e.preventDefault();
-    const result = await runAsync(async () => await handleLogout(), "Logout successfully");
-    if (result.ok) {
-      window.location.href = window.location.origin;
-    }
-  };
 
   return (
     <>
@@ -87,17 +78,7 @@ const MasterPanel = ({ activePanel, togglePanel }) => {
           <div className="p-3" style={{ color: "#1e3a5f" }}>
             <h5 className="mb-3">Settings</h5>
 
-            <div>
-              {error && <div className="text-danger mb-2">{error}</div>}
-              {success && <div className="text-success mb-2">{success}</div>}
-              <form onSubmit={submitLogout}>
-                <div className="d-grid gap-2 mt-4">
-                  <button className="btn btn-dark" type="submit" disabled={loading}>
-                    {loading ? "Please wait..." : "Logout"}
-                  </button>
-                </div>
-              </form>
-            </div>
+            <Logout />
           </div>
         )}
       </PanelTemplate>
