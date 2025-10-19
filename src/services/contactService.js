@@ -41,17 +41,23 @@ export async function update(id, payload) {
 
 export async function remove(id) {
   if (!id) throw new Error("ID is required for delete");
-  const body = await request(`/api/contact/${id}`, { method: "DELETE" });
+  const body = await request(`/api/contact/${id}`, {
+    method: "DELETE",
+  });
   return body?.data || body;
 }
 
 export async function getAll() {
-  const body = await request(`/api/contact`, { method: "GET" });
+  const body = await request(`/api/contact`, {
+    method: "GET",
+  });
   return body?.data || body;
 }
 
 export async function getById(id) {
-  const body = await request(`/api/contact/${id}`, { method: "GET" });
+  const body = await request(`/api/contact/${id}`, {
+    method: "GET",
+  });
   return body?.data || body;
 }
 
