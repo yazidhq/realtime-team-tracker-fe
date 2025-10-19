@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { AuthContext } from "./authContext";
 import authService from "../../services/authService";
 
@@ -14,14 +14,7 @@ export const AuthProvider = ({ children }) => {
 
   const [token, setToken] = useState(() => localStorage.getItem("authToken") || null);
   const [refreshToken, setRefreshToken] = useState(() => localStorage.getItem("authRefreshToken") || null);
-
   const isAuthenticated = !!token;
-
-  useEffect(() => {
-    if (token) {
-      // token could be validated or user fetched here
-    }
-  }, [token]);
 
   const handleRegister = async (payload) => {
     try {
