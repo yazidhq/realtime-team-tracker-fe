@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { AuthContext } from "./auth-context";
+import { AuthContext } from "./authContext";
 import authService from "../../services/authService";
 
 export const AuthProvider = ({ children }) => {

@@ -1,4 +1,4 @@
-import { useAuth } from "../../context/auth/auth-context";
+import { useAuth } from "../../context/auth/authContext";
 import { useAsyncStatus } from "../../hooks/useAsyncStatus";
 
 const Logout = () => {
