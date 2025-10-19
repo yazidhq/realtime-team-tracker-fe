@@ -1,18 +1,20 @@
-import { useAuth } from "../../context/auth/auth-context";
+import { useAuth } from "../../context/auth/authContext";
 import PanelButton from "../button/PanelButton";
 import PanelTemplate from "./PanelTemplate";
 import AuthForm from "../auth/AuthForm";
 import GroupPanel from "./GroupPanel";
 import SettingPanel from "./SettingPanel";
 import ProfilePanel from "./ProfilePanel";
+import ContactPanel from "./ContactPanel";
 
 const MasterPanel = ({ activePanel, togglePanel }) => {
   const { isAuthenticated } = useAuth();
 
   const panelButtons = [
-    { id: "profile", icon: "👤" },
-    { id: "group", icon: "👥" },
-    { id: "setting", icon: "⚙️" },
+    { id: "profile", icon: "👤︎" },
+    { id: "contact", icon: "☎︎" },
+    { id: "group", icon: "👥︎" },
+    { id: "setting", icon: "⚙︎" },
   ];
 
   return (
@@ -61,6 +63,12 @@ const MasterPanel = ({ activePanel, togglePanel }) => {
         {activePanel === "setting" && (
           <div className="p-3" style={{ color: "#1e3a5f" }}>
             <SettingPanel />
+          </div>
+        )}
+
+        {activePanel === "contact" && (
+          <div className="p-3" style={{ color: "#1e3a5f" }}>
+            <ContactPanel />
           </div>
         )}
       </PanelTemplate>

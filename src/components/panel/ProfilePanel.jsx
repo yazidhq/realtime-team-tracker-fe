@@ -1,4 +1,4 @@
-import { useAuth } from "../../context/auth/auth-context";
+import { useAuth } from "../../context/auth/authContext";
 import { CapitalizeFirstLetter } from "../../helpers/capitalized";
 
 const ProfilePanel = () => {
