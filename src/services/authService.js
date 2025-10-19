@@ -24,18 +24,27 @@ async function request(path, opts = {}) {
 }
 
 export async function login({ email, password }) {
-  const body = await request(`/api/auth/login`, { method: "POST", body: JSON.stringify({ email, password }) });
+  const body = await request(`/api/auth/login`, {
+    method: "POST",
+    body: JSON.stringify({ email, password }),
+  });
   const payload = body?.data || body;
   return payload;
 }
 
 export async function register(payload) {
-  const body = await request(`/api/auth/register`, { method: "POST", body: JSON.stringify(payload) });
+  const body = await request(`/api/auth/register`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
   return body?.data || body;
 }
 
 export async function refreshToken(refresh_token) {
-  const body = await request(`/api/auth/refresh_token`, { method: "POST", body: JSON.stringify({ refresh_token }) });
+  const body = await request(`/api/auth/refresh_token`, {
+    method: "POST",
+    body: JSON.stringify({ refresh_token }),
+  });
   return body?.data || body;
 }
 
