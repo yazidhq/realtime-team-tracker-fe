@@ -39,12 +39,15 @@ export const AuthProvider = ({ children }) => {
       const t = data.token || data.Token || null;
       const rt = data.refresh_token || data.RefreshToken || data.refreshToken || null;
       const id = data.id || data.ID || null;
+      const name = data.name || null;
+      const email = data.email || null;
+      const phone_number = data.phone_number || null;
 
       if (!t) throw new Error("token not provided by server");
 
       setToken(t);
       setRefreshToken(rt);
-      const userObj = { id };
+      const userObj = { id, name, email, phone_number };
       setUser(userObj);
       localStorage.setItem("authToken", t);
       if (rt) localStorage.setItem("authRefreshToken", rt);

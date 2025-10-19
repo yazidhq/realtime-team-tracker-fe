@@ -4,9 +4,20 @@ import MasterPanel from "../components/panel/MasterPanel";
 import { usePanelToggle } from "../hooks/usePanelToggle";
 import ControlButton from "../components/button/ControlButton";
 import DefaultRefreshIcon from "../components/icon/RefreshIcon";
+import { useEffect } from "react";
 
 const Home = () => {
-  const { activePanel, togglePanel } = usePanelToggle(false, 300);
+  const { activePanel, togglePanel } = usePanelToggle(false, 100);
+
+  useEffect(() => {
+    const src = "https://cdnjs.cloudflare.com/ajax/libs/lottie-player/2.0.12/lottie-player.js";
+    if (!document.querySelector(`script[src="${src}"]`)) {
+      const script = document.createElement("script");
+      script.src = src;
+      script.async = true;
+      document.body.appendChild(script);
+    }
+  }, []);
 
   return (
     <div className="position-relative" style={{ height: "100vh" }}>

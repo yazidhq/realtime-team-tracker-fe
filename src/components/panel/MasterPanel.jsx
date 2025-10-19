@@ -2,14 +2,26 @@ import { useAuth } from "../../context/auth/auth-context";
 import PanelButton from "../button/PanelButton";
 import PanelTemplate from "./PanelTemplate";
 import AuthForm from "../auth/AuthForm";
+import { CapitalizeFirstLetter } from "../../helpers/capitalized";
+import { useAsyncStatus } from "../../hooks/useAsyncStatus";
 
 const MasterPanel = ({ activePanel, togglePanel }) => {
-  const { isAuthenticated } = useAuth();
+  const { user, isAuthenticated, handleLogout } = useAuth();
+  const { loading, error, success, runAsync } = useAsyncStatus();
 
   const panelButtons = [
     { id: "profile", icon: "👤" },
     { id: "group", icon: "👥" },
+    { id: "setting", icon: "⚙️" },
   ];
+
+  const submitLogout = async (e) => {
+    e.preventDefault();
+    const result = await runAsync(async () => await handleLogout(), "Logout successfully");
+    if (result.ok) {
+      window.location.href = window.location.origin;
+    }
+  };
 
   return (
     <>
@@ -46,8 +58,17 @@ const MasterPanel = ({ activePanel, togglePanel }) => {
           <div className="p-3" style={{ color: "#1e3a5f" }}>
             {isAuthenticated ? (
               <>
-                <h5 className="mb-3">Profile</h5>
-                <div className="mb-3">Welcome back.</div>
+                <div className="d-flex justify-content-center mb-3">
+                  <lottie-player
+                    src="https://assets10.lottiefiles.com/packages/lf20_myejiggj.json"
+                    background="transparent"
+                    speed="1"
+                    style={{ width: "min(60vw, 300px)", height: "auto" }}
+                    loop
+                    autoplay
+                  ></lottie-player>
+                </div>
+                <div className="mb-3 fw-bold text-center fs-4">Welcome back, {CapitalizeFirstLetter(user.name)}</div>
               </>
             ) : (
               <AuthForm />
@@ -59,6 +80,24 @@ const MasterPanel = ({ activePanel, togglePanel }) => {
           <div className="p-3" style={{ color: "#1e3a5f" }}>
             <h5 className="mb-3">Group</h5>
             <div className="mb-3">Theme and settings go here.</div>
+          </div>
+        )}
+
+        {activePanel === "setting" && (
+          <div className="p-3" style={{ color: "#1e3a5f" }}>
+            <h5 className="mb-3">Settings</h5>
+
+            <div>
+              {error && <div className="text-danger mb-2">{error}</div>}
+              {success && <div className="text-success mb-2">{success}</div>}
+              <form onSubmit={submitLogout}>
+                <div className="d-grid gap-2 mt-4">
+                  <button className="btn btn-dark" type="submit" disabled={loading}>
+                    {loading ? "Please wait..." : "Logout"}
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         )}
       </PanelTemplate>
