@@ -3,7 +3,6 @@ import themes from "../assets/map-themes";
 import MasterPanel from "../components/panel/MasterPanel";
 import { usePanelToggle } from "../hooks/usePanelToggle";
 import ControlButton from "../components/button/ControlButton";
-import DefaultRefreshIcon from "../components/icon/RefreshIcon";
 import { useEffect } from "react";
 
 const Home = () => {
@@ -42,7 +41,7 @@ const Home = () => {
           window.location.reload();
         }}
         title="Refresh page"
-        icon={<DefaultRefreshIcon size={Math.max(12, Math.floor(30 * 0.45))} />}
+        icon={"⟳︎"}
       />
 
       <MasterPanel activePanel={activePanel} togglePanel={togglePanel} />
