@@ -14,3 +14,18 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+## Backend integration
+
+This frontend calls the backend API for authentication. Configure the backend base URL by creating a `.env` file in the project root with:
+
+```
+VITE_API_BASE=http://localhost:8080
+```
+
+Endpoints used:
+- POST /api/auth/login { email, password }
+- POST /api/auth/register { name, username, email, phone_number, password, confirm_password }
+- POST /api/auth/refresh_token { refresh_token }
+
+Successful responses store tokens in localStorage under `authToken` and `authRefreshToken`. Update the URL above if your backend runs on a different host/port.

@@ -7,7 +7,7 @@ const AuthForm = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [form, setForm] = useState({ username: "", password: "", email: "" });
+  const [form, setForm] = useState({ name: "", username: "", password: "", email: "", phone_number: "", confirm_password: "" });
 
   const onChange = (e) => setForm((s) => ({ ...s, [e.target.name]: e.target.value }));
 
@@ -19,11 +19,19 @@ const AuthForm = () => {
 
     try {
       if (mode === "login") {
-        const res = await handleLogin({ username: form.username, password: form.password });
+        const res = await handleLogin({ email: form.email, password: form.password });
         if (res?.ok) setSuccess("Login berhasil");
         else setError(res?.error || "Login gagal");
       } else {
-        const res = await handleRegister({ username: form.username, email: form.email, password: form.password });
+        const payload = {
+          name: form.name,
+          username: form.username,
+          email: form.email,
+          phone_number: form.phone_number,
+          password: form.password,
+          confirm_password: form.confirm_password,
+        };
+        const res = await handleRegister(payload);
         if (res?.ok) setSuccess("Registrasi berhasil, silakan login");
         else setError(res?.error || "Registrasi gagal");
       }

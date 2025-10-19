@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { AuthContext } from "./auth-context";
+import authService from "../../services/authService";
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
@@ -12,41 +13,80 @@ export const AuthProvider = ({ children }) => {
   });
 
   const [token, setToken] = useState(() => localStorage.getItem("authToken") || null);
+  const [refreshToken, setRefreshToken] = useState(() => localStorage.getItem("authRefreshToken") || null);
 
   const isAuthenticated = !!token;
 
   useEffect(() => {
     if (token) {
-      // If needed, fetch/verify user profile here using token
+      // token could be validated or user fetched here
     }
   }, [token]);
 
-  const handleRegister = async () => {
-    return { ok: true };
+  const handleRegister = async (payload) => {
+    try {
+      const res = await authService.register(payload);
+      return { ok: true, data: res };
+    } catch (err) {
+      return { ok: false, error: String(err.message || err) };
+    }
   };
 
   const handleLogin = async (credentials) => {
     try {
-      const fakeToken = "fake-token";
-      const fakeUser = { id: 1, name: credentials?.username || "Anonymous" };
+      const res = await authService.login({ email: credentials.email, password: credentials.password });
+      const data = res || {};
+      const t = data.token || data.Token || null;
+      const rt = data.refresh_token || data.RefreshToken || data.refreshToken || null;
+      const id = data.id || data.ID || null;
 
-      setToken(fakeToken);
-      setUser(fakeUser);
-      localStorage.setItem("authToken", fakeToken);
-      localStorage.setItem("authUser", JSON.stringify(fakeUser));
+      if (!t) throw new Error("token not provided by server");
 
-      return { ok: true, user: fakeUser };
+      setToken(t);
+      setRefreshToken(rt);
+      const userObj = { id };
+      setUser(userObj);
+      localStorage.setItem("authToken", t);
+      if (rt) localStorage.setItem("authRefreshToken", rt);
+      localStorage.setItem("authUser", JSON.stringify(userObj));
+
+      return { ok: true, user: userObj };
     } catch (error) {
-      return { ok: false, error };
+      return { ok: false, error: String(error.message || error) };
     }
   };
 
-  const handleLogout = async () => {
+  const handleLogout = useCallback(async () => {
     setToken(null);
     setUser(null);
+    setRefreshToken(null);
     localStorage.removeItem("authToken");
     localStorage.removeItem("authUser");
-  };
+    localStorage.removeItem("authRefreshToken");
+  }, []);
 
-  return <AuthContext.Provider value={{ user, token, isAuthenticated, handleRegister, handleLogin, handleLogout }}>{children}</AuthContext.Provider>;
+  const refresh = useCallback(async () => {
+    try {
+      if (!refreshToken) throw new Error("no refresh token");
+      const res = await authService.refreshToken(refreshToken);
+      const data = res || {};
+      const t = data.token || data.Token || null;
+      const rt = data.refresh_token || data.RefreshToken || data.refreshToken || null;
+      if (!t) throw new Error("refresh failed: no token");
+      setToken(t);
+      if (rt) setRefreshToken(rt);
+      localStorage.setItem("authToken", t);
+      if (rt) localStorage.setItem("authRefreshToken", rt);
+      return { ok: true };
+    } catch (err) {
+      await handleLogout();
+      return { ok: false, error: String(err.message || err) };
+    }
+  }, [refreshToken, handleLogout]);
+
+  return (
+    <AuthContext.Provider value={{ user, token, isAuthenticated, handleRegister, handleLogin, handleLogout, refresh }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
