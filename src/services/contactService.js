@@ -38,7 +38,7 @@ export async function create(payload) {
 
 export async function update(id, payload) {
   const body = await request(`/api/contact/${id}`, {
-    method: "PUT",
+    method: "PATCH",
     body: JSON.stringify(payload),
   });
   return body?.data || body;
