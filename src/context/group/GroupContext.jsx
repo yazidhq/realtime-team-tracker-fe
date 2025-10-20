@@ -11,9 +11,9 @@ export const GroupProvider = ({ children }) => {
     }
   };
 
-  const handleUpdate = async (payload) => {
+  const handleUpdate = async (id, payload) => {
     try {
-      const res = await groupService.update(payload);
+      const res = await groupService.update(id, payload);
       return { ok: true, data: res };
     } catch (err) {
       return { ok: false, error: String(err.message || err) };
