@@ -1,9 +1,14 @@
 const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:8080";
+const TOKEN = localStorage.getItem("authToken");
 
 async function request(path, opts = {}) {
   const url = `${API_BASE}${path}`;
   const res = await fetch(url, {
-    headers: { "Content-Type": "application/json", ...(opts.headers || {}) },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${TOKEN}`,
+      ...(opts.headers || {}),
+    },
     ...opts,
   });
 
@@ -24,7 +29,7 @@ async function request(path, opts = {}) {
 }
 
 export async function create(payload) {
-  const body = await request(`/api/contact`, {
+  const body = await request(`/api/contact/`, {
     method: "POST",
     body: JSON.stringify(payload),
   });
@@ -48,7 +53,7 @@ export async function remove(id) {
 }
 
 export async function getAll() {
-  const body = await request(`/api/contact`, {
+  const body = await request(`/api/contact/`, {
     method: "GET",
   });
   return body?.data || body;
