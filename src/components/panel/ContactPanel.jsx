@@ -173,7 +173,7 @@ const ContactPanel = () => {
             </span>
             <input
               className="form-control border-start-0 ps-0"
-              placeholder="Add contact by username"
+              placeholder="Input username"
               value={newContactId}
               onChange={(e) => setNewContactId(e.target.value)}
               aria-label="username"
