@@ -38,6 +38,15 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const handleGetAllFiltered = async (filters = {}, ops = {}) => {
+    try {
+      const res = await userService.getAllFiltered(filters, ops);
+      return { ok: true, data: res };
+    } catch (err) {
+      return { ok: false, error: String(err.message || err) };
+    }
+  };
+
   const handleGetById = async (id) => {
     try {
       const res = await userService.getById(id);
@@ -55,6 +64,7 @@ export const UserProvider = ({ children }) => {
         handleRemove,
         handleGetAll,
         handleGetById,
+        handleGetAllFiltered,
       }}
     >
       {children}

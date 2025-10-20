@@ -11,9 +11,9 @@ export const ContactProvider = ({ children }) => {
     }
   };
 
-  const handleUpdate = async (payload) => {
+  const handleUpdate = async (id, payload) => {
     try {
-      const res = await contactService.update(payload);
+      const res = await contactService.update(id, payload);
       return { ok: true, data: res };
     } catch (err) {
       return { ok: false, error: String(err.message || err) };

@@ -2,11 +2,17 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 import { AuthProvider } from "./context/auth/AuthContext.jsx";
+import { ContactProvider } from "./context/contact/ContactContext.jsx";
+import { UserProvider } from "./context/user/userContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthProvider>
-      <App />
+      <UserProvider>
+        <ContactProvider>
+          <App />
+        </ContactProvider>
+      </UserProvider>
     </AuthProvider>
   </StrictMode>
 );
