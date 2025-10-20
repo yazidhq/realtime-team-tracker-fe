@@ -37,8 +37,11 @@ const ContactPanel = () => {
 
         const contactsData = res.result || [];
 
+        // only show contacts where the current user is involved
+        const visibleContacts = (contactsData || []).filter((c) => c?.user_id === user?.id || c?.contact_id === user?.id);
+
         const users = await Promise.all(
-          contactsData.map(async (c) => {
+          visibleContacts.map(async (c) => {
             try {
               const [targetRes, creatorRes] = await Promise.allSettled([handleGetById(c.contact_id), handleGetById(c.user_id)]);
 
@@ -70,7 +73,7 @@ const ContactPanel = () => {
       mounted = false;
       resetStatus();
     };
-  }, [handleGetAll, handleGetById, runAsync, resetStatus]);
+  }, [handleGetAll, handleGetById, runAsync, resetStatus, user?.id]);
 
   const handleDelete = async (id) => {
     if (!window.confirm("Yakin ingin menghapus kontak ini?")) return;
