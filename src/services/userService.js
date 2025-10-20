@@ -1,12 +1,12 @@
 const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:8080";
-const TOKEN = localStorage.getItem("authToken");
 
 async function request(path, opts = {}) {
   const url = `${API_BASE}${path}`;
+  const token = localStorage.getItem("authToken");
   const res = await fetch(url, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${TOKEN}`,
+      Authorization: token ? `Bearer ${token}` : undefined,
       ...(opts.headers || {}),
     },
     ...opts,
@@ -59,6 +59,19 @@ export async function getAll() {
   return body?.data || body;
 }
 
+export async function getAllFiltered(filters = {}, ops = {}) {
+  const params = new URLSearchParams();
+  Object.keys(filters || {}).forEach((k) => params.append(`filter[${k}]`, filters[k]));
+  Object.keys(ops || {}).forEach((k) => params.append(`op[${k}]`, ops[k]));
+
+  const query = params.toString();
+  const path = query ? `/api/user/?${query}` : `/api/user/`;
+  const body = await request(path, {
+    method: "GET",
+  });
+  return body?.data || body;
+}
+
 export async function getById(id) {
   const body = await request(`/api/user/${id}`, {
     method: "GET",
@@ -66,4 +79,4 @@ export async function getById(id) {
   return body?.data || body;
 }
 
-export default { create, update, remove, getAll, getById };
+export default { create, update, remove, getAll, getById, getAllFiltered };
